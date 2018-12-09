@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using AMIntermediaCore;
 
 namespace AMIntermediaWeb
 {
@@ -25,6 +26,7 @@ namespace AMIntermediaWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddBackgroundProcessors();
             services.AddWebSocketManager();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -48,7 +50,17 @@ namespace AMIntermediaWeb
                 ReceiveBufferSize = 4 * 1024
             });
 
-            app.MapWebSocketManager("/ws", serviceProvider.GetService<DashboardRealtimeHandler>());
+            var dashboardHandler = serviceProvider.GetService<DashboardRealtimeHandler>();
+            var ordersPullingService = serviceProvider.GetService<OrdersPullingService>();
+            var aggregationService = serviceProvider.GetService<AggregationService>();
+
+
+            aggregationService.Start();
+            ordersPullingService.Start();
+            aggregationService.OrdersUpdateHandler = dashboardHandler.SendOrderUpdate;
+            aggregationService.AxesUpdateHandler = dashboardHandler.SendAxeUpdate;
+            
+            app.MapWebSocketManager("/ws", dashboardHandler);
             
             /*
             app.UseHttpsRedirection();

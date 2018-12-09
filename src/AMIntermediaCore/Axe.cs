@@ -1,5 +1,5 @@
 using System;
-
+using Newtonsoft.Json.Linq;
 namespace AMIntermediaCore
 {
     public class Axe 
@@ -28,5 +28,9 @@ namespace AMIntermediaCore
         public string FileEventId {get; set;}
         public DateTime CreationDate {get; set;}
         
+
+        public static Axe FromJObject(JObject jObj){
+            return jObj.ToObject<Axe>();
+        }
     }
 }

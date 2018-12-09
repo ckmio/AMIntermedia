@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System.Reflection;
+using AMIntermediaCore;
 
 namespace AMIntermediaWeb
 {
@@ -30,6 +31,14 @@ namespace AMIntermediaWeb
             return services;
         }
 
+        public static IServiceCollection AddBackgroundProcessors(this IServiceCollection services)
+        {
+            string axesStreamName = "new-axes";
+            string ordersStreamName = "new-orders";
+            services.AddSingleton<AggregationService>(new AggregationService(axesStreamName, ordersStreamName));
+            services.AddSingleton<OrdersPullingService>(new OrdersPullingService(ordersStreamName, 30000));
+            return services;
+        }
 
     }
 }

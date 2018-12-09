@@ -14,6 +14,11 @@ namespace AMIntermediaCore
         public CkmioClient MioClient {get; set;}
 
         public List<Axe> Axes {get; private set;}
+        public List<Order> Orders {get; private set;}
+
+        public Action<Axe> AxesUpdateHandler {get; set;}
+
+        public Action<Order> OrdersUpdateHandler {get; set;}
 
         public AggregationService(string axesStreamName, string ordersStreamName)
         {
@@ -39,15 +44,16 @@ namespace AMIntermediaCore
         {
             if(axeUpdate.Stream == AxesStreamName && axeUpdate.Content != String.Empty)
             {
-                SaveAxe((JObject)axeUpdate.Content);
-                Console.WriteLine($"Received a new axe :\n {axeUpdate.Content}");
+                var axeDict =(JObject)axeUpdate.Content;
+                SaveAxe(axeDict);
+                if(AxesUpdateHandler!=null) AxesUpdateHandler(Axe.FromJObject(axeDict));
                 return;
             }
 
             if(axeUpdate.Stream == OrdersStreamName && axeUpdate.Content != String.Empty)
             {
                 var orderDict = (JObject)axeUpdate.Content ;
-                Console.WriteLine($"Received a new Order :\n {orderDict["Desk"]}");
+                if(OrdersUpdateHandler!=null) OrdersUpdateHandler(Order.FromJObject(orderDict));
             }
         }
 

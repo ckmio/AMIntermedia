@@ -14,10 +14,6 @@ namespace AMIntermediaWeb
     {
         public static void Main(string[] args)
         {
-            string axesStreamName = "new-axes";
-            string ordersStreamName = "new-orders";
-            new AMIntermediaCore.AggregationService(axesStreamName, ordersStreamName).Start();
-            new AMIntermediaCore.OrdersPullingService(ordersStreamName, 30000).Start();
             CreateWebHostBuilder(args).Build().Run();
         }
 
