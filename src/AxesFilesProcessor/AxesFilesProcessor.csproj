@@ -9,4 +9,8 @@
     <ProjectReference Include="..\Ckmio\Ckmio.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AMIntermediaCore\AMIntermediaCore.csproj" />
+  </ItemGroup>
+
 </Project>

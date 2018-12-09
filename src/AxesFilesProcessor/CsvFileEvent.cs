@@ -15,8 +15,6 @@ namespace AMIntermedia.AxesFilesProcessor{
         public List<string> Headers {get; set;}
         public List<Dictionary<string, object> > Lines {get; set;}
 
-        public CsvFileContent CsvFileContent {get; set;}
-
         public CsvFileEvent(string fileName, DateTime lastModifiedDate)
         {
             this.FileFullPath = fileName; 

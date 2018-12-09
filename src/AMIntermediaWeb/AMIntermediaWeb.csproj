@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" />
   </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\AMIntermediaCore\AMIntermediaCore.csproj" />
   </ItemGroup>

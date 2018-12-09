@@ -9,18 +9,20 @@ namespace AMIntermediaCore
         public string CounterParty {get; set;}
         public string Desk{get; set;}
         public string BuyOrSell {get; set; }
+
+        public double Amount {get; set;}
         public string Currency {get; set;}
-        public double? DiscountMargin {get; set;}
-        public double? MidSwap {get; set;}
-        public double? Zspread {get; set;}
+        public double DiscountMargin {get; set;}
+        public double MidSwap {get; set;}
+        public double Zspread {get; set;}
 
         public string CDSBasis {get; set;}
         public double BenchSpread{get; set;}
 
         public string BenchIsin {get; set;}
-        public double? CashPrice {get; set;}
+        public double CashPrice {get; set;}
 
-        public double? YieldPrice {get; set;}
+        public double YieldPrice {get; set;}
         public string Commentary {get; set;}
 
         public string FileEventId {get; set;}
