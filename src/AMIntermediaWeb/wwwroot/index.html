@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--Import some nice fonts -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+   
+
+    <title>AM Intermedia - Demo</title>
+    <style>
+        #monitor{
+            font-family: 'Roboto';
+            margin : auto;
+            width: 50%;
+            padding :10px;
+            text-align: center;
+        }
+        .icon{
+            font-family: 'Material Icons';
+        }
+        .open{
+            color:green;
+        }
+        .closed{
+            color: red;
+        }
+        .icon.status{
+            font-size : 256px;
+        }
+    </style>
+</head>
+<body data-bind="css : { loading : loading}" class="loading">
+    <div id="monitor" class="closed">
+        <h1><span id="headingText">Gates Closed </span><span id="titleIcon" class="icon title">error</span></h1>
+        <span id="statusIcon" class="icon status">lock</span>
+        <h5><span id="numberOfPeople">1000</span> People</h5>
+    </div>
+
+     <!-- Reference JQuery-->
+     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+     <script src="/knockout.js"></script>
+
+    <script>
+        // we assume we are going to be notified with : "open:234" or "closed:999"
+        function display_status(status){
+            if(status.indexOf("open")>-1)
+                return{
+                    headingText: "Gates Open ",
+                    gateStatus : "open",
+                    titleIcon : "check",
+                    statusIcon: "lock_open",
+                    numberOfPeople : status.substring(status.indexOf(":")+1)
+                }
+                return{
+                    headingText: "Gates Closed ",
+                    gateStatus : "closed",
+                    titleIcon : "error",
+                    statusIcon: "lock",
+                    numberOfPeople : status.substring(status.indexOf(":")+1)
+                }
+        }
+
+        function setStatus(status){
+            var details = display_status(status);
+            $("#monitor").removeClass();
+            $("#monitor").addClass(details.gateStatus);
+            $("#titleIcon").text(details.titleIcon);
+            $("#headingText").text(details.headingText);
+            $("#statusIcon").text(details.statusIcon);
+            $("#numberOfPeople").text(details.numberOfPeople);
+        }
+
+        var s = new WebSocket("ws://localhost:5000/ws");
+        s.onmessage = (message)=> {
+            console.log(message.data);
+        }
+        s.onopen = ()=>{
+            s.send("hello");
+        }
+
+        var viewModel = {
+            aggregations : ko.observableArray([]),
+            loading : ko.observable(false),
+        };
+
+        ko.applyBindings(viewModel);
+
+    </script>
+</body>
+</html>
