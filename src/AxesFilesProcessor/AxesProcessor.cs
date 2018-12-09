@@ -52,18 +52,36 @@ namespace AMIntermedia.AxesFilesProcessor
             Console.WriteLine("Name : "+ e.Name);
             Console.WriteLine("ChangeType : "+ e.ChangeType);
             Console.WriteLine("FullPath : "+ e.FullPath);
-            MioClient.SendToStream("new-axes", new { Name = e.Name, FullPath = e.FullPath, ChangeType = e.ChangeType});
+            var fileEvent = CsvFileEvent.FromFile(e.FullPath);
+            foreach(var line in fileEvent.Lines)
+            {
+                MioClient.SendToStream("new-axes", new { Name = e.Name, FullPath = e.FullPath, ChangeType = e.ChangeType, content = line });
+            }
+        }
+
+        public void RenamedCsvFileEventHandler(object sender, RenamedEventArgs e)
+        {
+            Console.WriteLine("Name : "+ e.Name);
+            Console.WriteLine("ChangeType : "+ e.ChangeType);
+            Console.WriteLine("OldPath : "+ e.OldFullPath);
+            Console.WriteLine("FullPath : "+ e.FullPath);
+            var fileEvent = CsvFileEvent.FromFile(e.FullPath);
+            foreach(var line in fileEvent.Lines)
+            {
+                MioClient.SendToStream("new-axes", new { Name = e.Name, FullPath = e.FullPath, ChangeType = e.ChangeType, content = line });
+            }
         }
 
         private void WatchIncomingFilesDirectory(){
             FileSystemWatcher watcher = new FileSystemWatcher();
             watcher.Path = IncomingFilesDirectoryPath;
-            watcher.NotifyFilter = NotifyFilters.LastWrite;
+            watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.LastAccess;
             /*
             watcher.Filter = "*.*";
             */
-            watcher.Filter = "test.*";
+            watcher.Filter = "NAT_FI.*";
             watcher.Changed += new FileSystemEventHandler(CsvFileEventHandler);
+            watcher.Renamed += new RenamedEventHandler(RenamedCsvFileEventHandler);
             watcher.EnableRaisingEvents = true;
             
         }
