@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Elements - Editorial by HTML5 UP</title>
+		<title>AM Intermedia</title>
 		<meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -25,12 +25,30 @@
 
 							<!-- Content -->
 									<header class="main">
-										<h1>AM Intermedia</h1>
+                                        <h1>AM Intermedia</h1>
                                     </header>
                                     <hr class="major" />
 
 									<!-- Content -->
-										<h2 id="content">Nouveaux ordres</h2>  <!-- on the side put some insights..-->
+                                    <div class="row">
+                                            <div class="col-6 col-12-medium">
+												<h2 data-bind="visible : !has_selected_aggreg()">New orders</h2>
+												<div>
+													<h2 data-bind="visible : has_selected_aggreg">Order : <span data-bind="text : selected_aggreg().Id"></span></h2>
+													<h2 data-bind="visible : has_selected_aggreg">From Desk :<span data-bind="text : selected_aggreg().Desk"></span></h2>
+												</div>
+												
+                                            </div>
+                                            <div class="col-6 col-12-medium" data-bind="visible : has_selected_aggreg">
+                                                <div class="box">
+                                                    <h3>Insights on <span data-bind="text :selected_aggreg().ISIN"></span> </h3>
+                                                            <p>Felis sagittis eget tempus primis in faucibus vestibulum.
+                                                                Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent 
+                                                                tincidunt felis sagittis eget. tempus euismod. Magna sed etiam ante ipsum primis in faucibus vestibulum.
+                                                            </p>
+                                                </div>
+                                             </div>
+                                         </div>
 
 									
 										<div class="row gtr-200">
@@ -52,7 +70,7 @@
 															</thead>
 															<tbody>
                                                                  <!-- ko foreach: { data : aggregations, as : 'aggr'} -->
-																<tr>
+																<tr data-bind="click : $root.select_aggreg, clickBubble : false">
 																	<td data-bind="text : aggr.Id"></td>
 																	<td data-bind="text : aggr.Desk"></td>
                                                                     <td data-bind="text : aggr.ISIN"></td>
@@ -61,17 +79,48 @@
                                                                 </tr>
                                                                 <!--/ko -->
 															</tbody>
-															<tfoot>
-																<tr>
-																	<td colspan="2"></td>
-																	<td>100.00</td>
-																</tr>
-															</tfoot>
 														</table>
 													</div>
 
                                                 <!-- Put axes details here...-->
-											</div>
+                                            </div>
+                                            <div class="col-12" data-bind="visible : has_selected_aggreg">
+                                                    <!-- Table -->
+                                                        <h3>Axes</h3>
+    
+                                                        <div id="axes-table" class="table-wrapper">
+                                                            <table>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>CPTY</th>
+                                                                        <th>DESK</th>
+                                                                        <th>ISIN</th>
+                                                                        <th>AMT</th>
+																		<th>CUR</th>
+																		<th>B/S</th>
+																		<th>PRC</th>
+																		<th>YLD</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                     <!-- ko foreach: { data : select_aggreg_axes, as : 'axe'} -->
+                                                                    <tr>
+                                                                        <td data-bind="text : axe.CounterParty"></td>
+                                                                        <td data-bind="text : axe.Desk"></td>
+                                                                        <td data-bind="text : axe.ISIN"></td>
+																		<td data-bind="text : axe.Amount"></td>
+																		<td data-bind="text : 'EUR'"></td>
+																		<td data-bind="text : axe.BuyOrSell"></td>
+																		<td data-bind="text : axe.CashPrice"></td>
+																		<td data-bind="text : axe.YieldPrice"></td>
+                                                                    </tr>
+                                                                    <!--/ko -->
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+    
+                                                    <!-- Put axes details here...-->
+                                                </div>
 										</div>
 
 						</div>
@@ -94,76 +143,28 @@
 										<h2>Menu</h2>
 									</header>
 									<ul>
-										<li><a href="index.html">Homepage</a></li>
-										<li><a href="generic.html">Generic</a></li>
-										<li><a href="elements.html">Elements</a></li>
-										<li>
-											<span class="opener">Submenu</span>
-											<ul>
-												<li><a href="#">Lorem Dolor</a></li>
-												<li><a href="#">Ipsum Adipiscing</a></li>
-												<li><a href="#">Tempus Magna</a></li>
-												<li><a href="#">Feugiat Veroeros</a></li>
-											</ul>
-										</li>
-										<li><a href="#">Etiam Dolore</a></li>
-										<li><a href="#">Adipiscing</a></li>
-										<li>
-											<span class="opener">Another Submenu</span>
-											<ul>
-												<li><a href="#">Lorem Dolor</a></li>
-												<li><a href="#">Ipsum Adipiscing</a></li>
-												<li><a href="#">Tempus Magna</a></li>
-												<li><a href="#">Feugiat Veroeros</a></li>
-											</ul>
-										</li>
-										<li><a href="#">Maximus Erat</a></li>
-										<li><a href="#">Sapien Mauris</a></li>
-										<li><a href="#">Amet Lacinia</a></li>
+                                        <li><a href="index.html">Orders</a></li>
+                                        <li><a href="index.html">Axes Analysis</a></li>
 									</ul>
 								</nav>
 
 							<!-- Section -->
 								<section>
 									<header class="major">
-										<h2>Ante interdum</h2>
+										<h2>AM Intermedia Demo</h2>
 									</header>
-									<div class="mini-posts">
-										<article>
-											<a href="#" class="image"><img src="images/pic07.jpg" alt="" /></a>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore aliquam.</p>
-										</article>
-										<article>
-											<a href="#" class="image"><img src="images/pic08.jpg" alt="" /></a>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore aliquam.</p>
-										</article>
-										<article>
-											<a href="#" class="image"><img src="images/pic09.jpg" alt="" /></a>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore aliquam.</p>
-										</article>
-									</div>
-									<ul class="actions">
-										<li><a href="#" class="button">More</a></li>
-									</ul>
-								</section>
-
-							<!-- Section -->
-								<section>
-									<header class="major">
-										<h2>Get in touch</h2>
-									</header>
-									<p>Sed varius enim lorem ullamcorper dolore aliquam aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin sed aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+									<p>A demo for orders and axes aggregation.</p>
 									<ul class="contact">
-										<li class="fa-envelope-o"><a href="#">information@untitled.tld</a></li>
-										<li class="fa-phone">(000) 000-0000</li>
-										<li class="fa-home">1234 Somewhere Road #8254<br />
-										Nashville, TN 00000-0000</li>
+										<li class="fa-envelope-o"><a href="mailto:support@ckmio.com">support@ckmio.com</a></li>
+										<li class="fa-phone">+336 95 42 83 96</li>
+										<li class="fa-home">25 Rue Bapst<br />
+										92100 Asnières-sur-Seine</li>
 									</ul>
 								</section>
 
 							<!-- Footer -->
 								<footer id="footer">
-									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+									<p class="copyright">&copy; <a href="https://www.ckmio.com">ckmio</a>. All rights reserved. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
 								</footer>
 
 						</div>

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
 namespace AMIntermediaCore
@@ -15,6 +16,8 @@ namespace AMIntermediaCore
 
         public string ProfitCenter {get; set;}
         public string Desk {get; set;}
+
+        public List<Axe> Axes {get; set; }
 
         public static Order FromJObject(JObject jObj ){
             return jObj.ToObject<Order>();

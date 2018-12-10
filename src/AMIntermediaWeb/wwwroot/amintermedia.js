@@ -20,9 +20,20 @@ s.onopen = ()=>{
 
 var viewModel = {
     aggregations : ko.observableArray([]),
+    selected_aggreg : ko.observable({}),
     currentAxes : ko.observableArray([]),
     loading : ko.observable(false),
+    select_aggreg_axes : ko.observableArray([]),
+    select_aggreg : function (data, event){
+        viewModel.selected_aggreg(data);
+        viewModel.select_aggreg_axes(data["Axes"]);
+    }
+
 };
+
+viewModel.has_selected_aggreg = new ko.computed(function(){
+    return viewModel.selected_aggreg()!= {};
+}, viewModel);
 
 ko.applyBindings(viewModel);
 

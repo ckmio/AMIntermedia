@@ -25,6 +25,7 @@ namespace AMIntermediaCore
             this.AxesStreamName = axesStreamName;
             this.OrdersStreamName = ordersStreamName;
             this.Axes = new List<Axe>();
+            this.Orders = new List<Order>();
         }
         public void Start()
         {
@@ -44,22 +45,27 @@ namespace AMIntermediaCore
         {
             if(axeUpdate.Stream == AxesStreamName && axeUpdate.Content != String.Empty)
             {
-                var axeDict =(JObject)axeUpdate.Content;
-                SaveAxe(axeDict);
-                if(AxesUpdateHandler!=null) AxesUpdateHandler(Axe.FromJObject(axeDict));
+                var axeDict =(JObject)((JObject)axeUpdate.Content)["content"];
+                var axe = Axe.FromJObject(axeDict);
+                SaveAxe(axe);
+                if(AxesUpdateHandler!=null) AxesUpdateHandler(axe);
                 return;
             }
 
             if(axeUpdate.Stream == OrdersStreamName && axeUpdate.Content != String.Empty)
             {
-                var orderDict = (JObject)axeUpdate.Content ;
-                if(OrdersUpdateHandler!=null) OrdersUpdateHandler(Order.FromJObject(orderDict));
+                var orderDict = (JObject)axeUpdate.Content;
+                var order = Order.FromJObject(orderDict);
+                order.Axes = FindLatestAxes(order.ISIN);
+                Orders.Add(order);
+                if(OrdersUpdateHandler!=null) OrdersUpdateHandler(order);
             }
         }
 
-        public void SaveAxe(JObject content)
+        public void SaveAxe(Axe axe)
         {
-            Console.WriteLine("ISIN_CODE : "+ ((JObject)content["content"])["ISIN_CODE"]);
+            Axes.Add(axe);
+            Console.WriteLine(axe.ISIN);
         }
 
         public List<Axe> FindLatestAxes(string ISIN)

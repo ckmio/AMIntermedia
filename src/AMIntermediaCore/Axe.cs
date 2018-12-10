@@ -30,7 +30,11 @@ namespace AMIntermediaCore
         
 
         public static Axe FromJObject(JObject jObj){
-            return jObj.ToObject<Axe>();
+            var axe = jObj.ToObject<Axe>();
+            axe.ISIN = (string)jObj["ISIN_CODE"];
+            axe.CounterParty = (string)jObj["COUNTERPART"];
+            axe.BuyOrSell = (string)jObj["BUY/SELL"];
+            return axe; 
         }
     }
 }
