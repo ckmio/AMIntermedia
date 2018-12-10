@@ -29,39 +29,18 @@
                                     </header>
                                     <hr class="major" />
 
-									<!-- Content -->
-                                    <div class="row">
-                                            <div class="col-6 col-12-medium">
-												<h2 data-bind="visible : !has_selected_aggreg()">New orders</h2>
-												<div>
-													<h2 data-bind="visible : has_selected_aggreg">Order : <span data-bind="text : selected_aggreg().Id"></span></h2>
-													<h2 data-bind="visible : has_selected_aggreg">From Desk :<span data-bind="text : selected_aggreg().Desk"></span></h2>
-												</div>
-												
-                                            </div>
-                                            <div class="col-6 col-12-medium" data-bind="visible : has_selected_aggreg">
-                                                <div class="box">
-                                                    <h3>Insights on <span data-bind="text :selected_aggreg().ISIN"></span> </h3>
-                                                            <p>Felis sagittis eget tempus primis in faucibus vestibulum.
-                                                                Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent 
-                                                                tincidunt felis sagittis eget. tempus euismod. Magna sed etiam ante ipsum primis in faucibus vestibulum.
-                                                            </p>
-                                                </div>
-                                             </div>
-                                         </div>
 
 									
 										<div class="row gtr-200">
-											<div class="col-12">
+											<div class="col-8">
 
 												<!-- Table -->
-													<h3>Orders</h3>
+													<h2>Blotter</h2>
 
 													<div id="orders-table" class="table-wrapper">
-														<table>
+														<table class="blotter">
 															<thead>
 																<tr>
-																	<th>ID</th>
 																	<th>Desk</th>
                                                                     <th>ISIN</th>
                                                                     <th>AMT</th>
@@ -70,8 +49,7 @@
 															</thead>
 															<tbody>
                                                                  <!-- ko foreach: { data : aggregations, as : 'aggr'} -->
-																<tr data-bind="click : $root.select_aggreg, clickBubble : false">
-																	<td data-bind="text : aggr.Id"></td>
+																<tr data-bind="click : $root.select_aggreg, clickBubble : false, css: {selected : aggr.selected }">
 																	<td data-bind="text : aggr.Desk"></td>
                                                                     <td data-bind="text : aggr.ISIN"></td>
                                                                     <td data-bind="text : aggr.Amount"></td>
@@ -83,8 +61,62 @@
 													</div>
 
                                                 <!-- Put axes details here...-->
-                                            </div>
-                                            <div class="col-12" data-bind="visible : has_selected_aggreg">
+											</div>
+											<div class="col-4">
+													<h2>Pre-Trade Analysis</h2>
+													<!-- Table -->
+														<div class="row" data-bind="visible: has_selected_aggreg">
+															<div class="col-6">
+																	<div class="box">
+																			<h3>Dealer Ranking <span data-bind="text :selected_aggreg()!=null? selected_aggreg().ISIN : ''"></span> </h3>
+																			<div id="axes-table" class="table-wrapper">
+																					<table>
+																						<thead>
+																							<tr>
+																								<th>CPTY</th>
+																								<th>Rank</th>
+																							</tr>
+																						</thead>
+																						<tbody>
+																							 <!-- ko foreach:  { data : rankings, as : 'ranking'} -->
+																							<tr>
+																								<td data-bind="text : ranking.CounterParty"></td>
+																								<td data-bind="text : ranking.Score"></td>
+																							</tr>
+																							<!--/ko -->
+																						</tbody>
+																					</table>
+																				</div>
+																		</div>
+															</div>
+															<div class="col-6">
+																	<div class="box">
+																			<h3>Insights on <span data-bind="text :selected_aggreg()!=null? selected_aggreg().ISIN : ''"></span> </h3>
+																			<div id="axes-table" class="table-wrapper">
+																					<table>
+																						<thead>
+																							<tr>
+																								<th>CPTY</th>
+																								<th>Score</th>
+																							</tr>
+																						</thead>
+																						<tbody>
+																							 <!-- ko foreach: { data : insights, as : 'insight'} -->
+																							<tr>
+																								<td data-bind="text : insight.CounterParty"></td>
+																								<td data-bind="text : insight.Score"></td>
+																							</tr>
+																							<!--/ko -->
+																						</tbody>
+																					</table>
+																				</div>
+																		</div>
+															</div>
+														</div>
+	
+													<!-- Put axes details here...-->
+											</div>
+											<div class="col-6" data-bind="visible : has_selected_aggreg">
                                                     <!-- Table -->
                                                         <h3>Axes</h3>
     
@@ -120,7 +152,44 @@
                                                         </div>
     
                                                     <!-- Put axes details here...-->
-                                                </div>
+											</div>
+											<div class="col-6" data-bind="visible : has_selected_aggreg">
+                                                    <!-- Table -->
+                                                        <h3>Agrregations</h3>
+    
+                                                        <div id="axes-table" class="table-wrapper">
+                                                            <table>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>CPTY</th>
+                                                                        <th>DESK</th>
+                                                                        <th>ISIN</th>
+                                                                        <th>AMT</th>
+																		<th>CUR</th>
+																		<th>B/S</th>
+																		<th>PRC</th>
+																		<th>YLD</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                     <!-- ko foreach: { data : select_aggreg_axes, as : 'axe'} -->
+                                                                    <tr>
+                                                                        <td data-bind="text : axe.CounterParty"></td>
+                                                                        <td data-bind="text : axe.Desk"></td>
+                                                                        <td data-bind="text : axe.ISIN"></td>
+																		<td data-bind="text : axe.Amount"></td>
+																		<td data-bind="text : 'EUR'"></td>
+																		<td data-bind="text : axe.BuyOrSell"></td>
+																		<td data-bind="text : axe.CashPrice"></td>
+																		<td data-bind="text : axe.YieldPrice"></td>
+                                                                    </tr>
+                                                                    <!--/ko -->
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+    
+                                                    <!-- Put axes details here...-->
+                                            </div>
 										</div>
 
 						</div>

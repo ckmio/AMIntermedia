@@ -3,7 +3,23 @@
     max-height: 40vh;
 }
 
-#orders-table td
+table td
 {
     cursor: pointer;
+    font-size: 0.8em;
+}
+
+table th
+{
+    font-size: 0.8em;
+}
+
+table.blotter tr:hover, table.blotter tr.selected
+{
+    background-color:  #571C71;
+    color: #fff;
+}
+
+.box{
+    padding: 0.5em;
 }
