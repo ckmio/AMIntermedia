@@ -35,8 +35,8 @@ namespace AMIntermediaWeb
         {
             string axesStreamName = "new-axes";
             string ordersStreamName = "new-orders";
-            services.AddSingleton<AggregationService>(new AggregationService(axesStreamName, ordersStreamName));
-            services.AddSingleton<OrdersPullingService>(new OrdersPullingService(ordersStreamName, 30000));
+            services.AddSingleton<AggregationService>(new AggregationService());
+            services.AddSingleton<OrdersPullingService>(new OrdersPullingService());
             return services;
         }
 

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading;
 using Ckmio;
+using Microsoft.Extensions.Configuration;
 
 namespace AMIntermedia.AxesFilesProcessor
 {
@@ -9,14 +10,21 @@ namespace AMIntermedia.AxesFilesProcessor
     {
         public string IncomingFilesDirectoryPath {get; set;}
         public string ProcessingDirectoryPath {get; set;}
-        public string PublishingStreamId {get; set;}
+
+        public string AxesFilesFilter {get; set;}
+
+        public string AxesStreamName {get; set;}
         private ManualResetEvent quit = new ManualResetEvent(false);
         public CkmioClient MioClient {get; set;}
-        public AxesProcessor(string incomingPath, string processingPath, string publishingStreamId)
+        public AxesProcessor()
         {
-            this.IncomingFilesDirectoryPath = incomingPath;
-            this.ProcessingDirectoryPath = processingPath;
-            this.PublishingStreamId = publishingStreamId;
+            IConfiguration config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", optional:false, reloadOnChange:true)
+            .Build();
+            this.AxesStreamName = config["AMIntermediaServices:AxesStreamName"];;
+            this.IncomingFilesDirectoryPath = config["AMIntermediaServices:AxesIncomingFilesDirectory"];
+            this.ProcessingDirectoryPath = config["AMIntermediaServices:AxesProcessingLogDirectory"];
+            this.AxesFilesFilter = config["AMIntermediaServices:AxesFilesFilter"];
             this.MioClient = new CkmioClient( "community-test-key",
             "community-test-secret", 
             "Producer", "xpassw0rd");
@@ -55,7 +63,7 @@ namespace AMIntermedia.AxesFilesProcessor
             var fileEvent = CsvFileEvent.FromFile(e.FullPath);
             foreach(var line in fileEvent.Lines)
             {
-                MioClient.SendToStream("new-axes", new { Name = e.Name, FullPath = e.FullPath, ChangeType = e.ChangeType, content = line });
+                MioClient.SendToStream(AxesStreamName,new { Name = e.Name, FullPath = e.FullPath, ChangeType = e.ChangeType, content = line });
             }
         }
 
@@ -68,7 +76,7 @@ namespace AMIntermedia.AxesFilesProcessor
             var fileEvent = CsvFileEvent.FromFile(e.FullPath);
             foreach(var line in fileEvent.Lines)
             {
-                MioClient.SendToStream("new-axes", new { Name = e.Name, FullPath = e.FullPath, ChangeType = e.ChangeType, content = line });
+                MioClient.SendToStream(AxesStreamName, new { Name = e.Name, FullPath = e.FullPath, ChangeType = e.ChangeType, content = line });
             }
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Timers;
 using Ckmio;
+using Microsoft.Extensions.Configuration;
 
 namespace AMIntermediaCore
 {
@@ -18,12 +19,15 @@ namespace AMIntermediaCore
 
         public static int TradeIndex {get; private set;}
 
-        public OrdersPullingService(string ordersStream, int pullingInterval)
+        public OrdersPullingService()
         {
-            this.OrdersStream = ordersStream;
-            this.IntervalInMilliseconds = pullingInterval;
+             IConfiguration config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", optional:true, reloadOnChange:true)
+            .Build();
+            this.OrdersStream = config["AMIntermediaServices:OrdersStreamName"];;
+            this.IntervalInMilliseconds =  int.Parse(config["AMIntermediaServices:NewOrdersPullInterval"]);
             this.PullingTimer = new System.Timers.Timer();
-            this.PullingTimer.Interval =  pullingInterval;
+            this.PullingTimer.Interval = int.Parse(config["AMIntermediaServices:NewOrdersPullInterval"]);
             this.RandNumberProvider = new Random();
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Configuration;
 using Ckmio;
 
 namespace AMIntermediaCore
@@ -20,10 +21,13 @@ namespace AMIntermediaCore
 
         public Action<Order> OrdersUpdateHandler {get; set;}
 
-        public AggregationService(string axesStreamName, string ordersStreamName)
+        public AggregationService()
         {
-            this.AxesStreamName = axesStreamName;
-            this.OrdersStreamName = ordersStreamName;
+            IConfiguration config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", optional:true, reloadOnChange:true)
+            .Build();
+            this.AxesStreamName = config["AMIntermediaServices:AxesStreamName"];;;
+            this.OrdersStreamName = config["AMIntermediaServices:OrdersStreamName"];
             this.Axes = new List<Axe>();
             this.Orders = new List<Order>();
         }
