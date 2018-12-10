@@ -1,0 +1,1 @@
+dotnet run -p ./src/AMIntermediaWeb/AMIntermediaWeb.csproj
