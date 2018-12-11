@@ -25,8 +25,8 @@ var viewModel = {
     selected_aggreg : ko.observable(null),
     currentAxes : ko.observableArray([]),
     loading : ko.observable(false),
-    insights : ko.observableArray([{"CounterParty" : "SG", "Score": 177}, {"CounterParty" : "BNP", "Score": 98} , {"CounterParty" : "JP Morgan", "Score": 88}]),
-    rankings : ko.observableArray([{"CounterParty" : "HSBC", "Score": "1st"}, {"CounterParty" : "BNP", "Score": "2nd"} , {"CounterParty" : "Crédit Suisse", "Score": "3rd"}]),
+    insights : ko.observableArray([{"CounterParty" : "SG", "Score": 177, rankingFirst : true}, {"CounterParty" : "BNP", "Score": 98, rankingSecond : true} , {"CounterParty" : "JP Morgan", "Score": 88, rankingThird : true}]),
+    rankings : ko.observableArray([{"CounterParty" : "HSBC", "Score": "1st", rankingFirst : true}, {"CounterParty" : "BNP", "Score": "2nd", rankingSecond : true} , {"CounterParty" : "Crédit Suisse", "Score": "3rd", rankingThird : true}]),
     select_aggreg_axes : ko.observableArray([]),
     select_aggreg : function (data, event){
         if(viewModel.selected_aggreg())
@@ -39,7 +39,7 @@ var viewModel = {
 };
 
 viewModel.has_selected_aggreg = new ko.computed(function(){
-    return viewModel.selected_aggreg()!= {};
+    return viewModel.selected_aggreg()!= null;
 }, viewModel);
 
 ko.applyBindings(viewModel);

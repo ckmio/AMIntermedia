@@ -79,7 +79,7 @@
 																						</thead>
 																						<tbody>
 																							 <!-- ko foreach:  { data : rankings, as : 'ranking'} -->
-																							<tr>
+																							<tr data-bind="css : {'ranking-first' : ranking.rankingFirst,'ranking-second' : ranking.rankingSecond,'ranking-third' : ranking.rankingThird} ">
 																								<td data-bind="text : ranking.CounterParty"></td>
 																								<td data-bind="text : ranking.Score"></td>
 																							</tr>
@@ -102,7 +102,7 @@
 																						</thead>
 																						<tbody>
 																							 <!-- ko foreach: { data : insights, as : 'insight'} -->
-																							<tr>
+																							 <tr data-bind="css : {'ranking-first' : insight.rankingFirst,'ranking-second' : insight.rankingSecond,'ranking-third' : insight.rankingThird} ">
 																								<td data-bind="text : insight.CounterParty"></td>
 																								<td data-bind="text : insight.Score"></td>
 																							</tr>
