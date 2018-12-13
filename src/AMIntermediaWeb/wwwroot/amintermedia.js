@@ -110,15 +110,49 @@ viewModel.has_selected_aggreg = new ko.computed(function(){
 
 
 viewModel.selected_aggreg_supply = new ko.computed(function(){
-    return viewModel.selected_aggreg()!= null;
+    var agg =  viewModel.selected_aggreg();
+    var axes = viewModel.select_aggreg_axes()
+    if(!agg) return 'Global Supply : --'
+    var sum =0;
+    for(var i =0; i<axes.length; i++)
+    {
+        var axe = axes[i];
+        if(axe.BuyOrSell=='SELL')
+            sum += axe.Amount;
+    }
+    return 'Global Supply : '+sum;
+    
 }, viewModel);
 
 viewModel.selected_aggreg_demand =  new ko.computed(function(){
-    return viewModel.selected_aggreg()!= null;
+    var agg =  viewModel.selected_aggreg();
+    var axes = viewModel.select_aggreg_axes()
+    if(!agg) return 'Global Demand : --'
+    var sum =0;
+    for(var i =0; i<axes.length; i++)
+    {
+        var axe = axes[i];
+        if(axe.BuyOrSell=='BUY')
+            sum += axe.Amount;
+    }
+    return 'Global Demand : '+sum;
 }, viewModel);
 
 viewModel.selected_aggreg_net =  new ko.computed(function(){
-    return viewModel.selected_aggreg()!= null;
+    var agg =  viewModel.selected_aggreg();
+    var axes = viewModel.select_aggreg_axes()
+    if(!agg) return 'Net Demand : --'
+    var sum =0;
+    for(var i =0; i<axes.length; i++)
+    {
+        var axe = axes[i];
+        if(axe.BuyOrSell=='BUY')
+            sum += axe.Amount;
+        else{
+            sum -= axe.Amount;
+        }
+    }
+    return sum>0? 'Net Supply : '+sum : 'Net Demand : '+sum;
 }, viewModel);
 
 ko.applyBindings(viewModel);
