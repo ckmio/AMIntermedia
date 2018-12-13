@@ -25,33 +25,42 @@
 
 							<!-- Content -->
 									<header class="main">
-                                        <h1>AM Intermedia</h1>
+										<h1>NDAP</h1>
+										<h4>Natixis Asset Management Finance</h4>
                                     </header>
-                                    <hr class="major" />
 
 
 									
 										<div class="row gtr-200">
-											<div class="col-8">
+											<div class="col-6 box blotter-wrapper">
 
 												<!-- Table -->
 													<h2>Blotter</h2>
 
-													<div id="orders-table" class="table-wrapper">
-														<table class="blotter">
-															<thead>
-																<tr>
-																	<th>Desk</th>
-                                                                    <th>ISIN</th>
-                                                                    <th>AMT</th>
-                                                                    <th>CUR</th>
-																</tr>
-															</thead>
+													<div class="table-wrapper blotter">
+														<div class="blotter-head">
+															<table class="blotter-head">
+																	<thead>
+																		<tr>
+																			<th>Desk</th>
+																			<th>ISIN</th>
+																			<th>SECNAME</th>
+																			<th>BUY/SELL</th>
+																			<th>AMT</th>
+																			<th>CUR</th>
+																		</tr>
+																	</thead>
+															</table>
+														</div>
+														<div class="blotter-body">
+														<table>
 															<tbody>
                                                                  <!-- ko foreach: { data : aggregations, as : 'aggr'} -->
 																<tr data-bind="click : $root.select_aggreg, clickBubble : false, css: {selected : aggr.selected }">
 																	<td data-bind="text : aggr.Desk"></td>
-                                                                    <td data-bind="text : aggr.ISIN"></td>
+																	<td data-bind="text : aggr.ISIN"></td>
+																	<td data-bind="text : aggr.SecName"></td>
+																	<td data-bind="text : aggr.BuyOrSell"></td>
                                                                     <td data-bind="text : aggr.Amount"></td>
                                                                     <td data-bind="text : 'EUR'"></td>
                                                                 </tr>
@@ -59,22 +68,25 @@
 															</tbody>
 														</table>
 													</div>
+													</div>
 
                                                 <!-- Put axes details here...-->
 											</div>
-											<div class="col-4">
-													<h2>Pre-Trade Analysis</h2>
+											<div class="col-6 box">
+													<h2>Pre-Trade Analysis <span data-bind="text :selected_aggreg()!=null? selected_aggreg().Desk : ''"></span></h2>
 													<!-- Table -->
 														<div class="row" data-bind="visible: has_selected_aggreg">
 															<div class="col-6">
 																	<div class="box">
-																			<h3>Dealer Ranking <span data-bind="text :selected_aggreg()!=null? selected_aggreg().ISIN : ''"></span> </h3>
+																			<h3>Dealer Performance ranking</h3>
 																			<div id="axes-table" class="table-wrapper">
 																					<table>
 																						<thead>
 																							<tr>
 																								<th>CPTY</th>
-																								<th>Rank</th>
+																								<th>RANK</th>
+																								<th>VOL</th>
+																								<th>%MKTS</th>
 																							</tr>
 																						</thead>
 																						<tbody>
@@ -82,6 +94,8 @@
 																							<tr data-bind="css : {'ranking-first' : ranking.rankingFirst,'ranking-second' : ranking.rankingSecond,'ranking-third' : ranking.rankingThird} ">
 																								<td data-bind="text : ranking.CounterParty"></td>
 																								<td data-bind="text : ranking.Score"></td>
+																								<td data-bind="text : ranking.vol"></td>
+																								<td data-bind="text : ranking.mks"></td>
 																							</tr>
 																							<!--/ko -->
 																						</tbody>
@@ -91,13 +105,15 @@
 															</div>
 															<div class="col-6">
 																	<div class="box">
-																			<h3>Insights on <span data-bind="text :selected_aggreg()!=null? selected_aggreg().ISIN : ''"></span> </h3>
+																			<h3>Exec Mode Insights</h3>
 																			<div id="axes-table" class="table-wrapper">
 																					<table>
 																						<thead>
 																							<tr>
 																								<th>CPTY</th>
 																								<th>Score</th>
+																								<th>Mode</th>
+																								<th>CH.</th>
 																							</tr>
 																						</thead>
 																						<tbody>
@@ -105,6 +121,8 @@
 																							 <tr data-bind="css : {'ranking-first' : insight.rankingFirst,'ranking-second' : insight.rankingSecond,'ranking-third' : insight.rankingThird} ">
 																								<td data-bind="text : insight.CounterParty"></td>
 																								<td data-bind="text : insight.Score"></td>
+																								<td data-bind="text : 'LT'"></td>
+																								<td data-bind="text : 'TW'"></td>
 																							</tr>
 																							<!--/ko -->
 																						</tbody>
@@ -118,7 +136,7 @@
 											</div>
 											<div class="col-6" data-bind="visible : has_selected_aggreg">
                                                     <!-- Table -->
-                                                        <h3>Axes</h3>
+                                                        <h3>Axes <span data-bind="text :selected_aggreg()!=null? ' on ' + selected_aggreg().ISIN : ''"></span></h3>
     
                                                         <div id="axes-table" class="table-wrapper">
                                                             <table>
@@ -147,7 +165,14 @@
 																		<td data-bind="text : axe.YieldPrice"></td>
                                                                     </tr>
                                                                     <!--/ko -->
-                                                                </tbody>
+																</tbody>
+																<tfoot>
+																	<tr>
+																		<td colspan="3" data-bind="text : selected_aggreg_demand"></td>
+																		<td colspan="3" data-bind="text : selected_aggreg_supply"></td>
+																		<td colspan="2" data-bind="text : selected_aggreg_net"></td>
+																	</tr>
+																</tfoot>
                                                             </table>
                                                         </div>
     
@@ -155,35 +180,27 @@
 											</div>
 											<div class="col-6" data-bind="visible : has_selected_aggreg">
                                                     <!-- Table -->
-                                                        <h3>Agrregations</h3>
+                                                        <h3>Aggregations</h3>
     
                                                         <div id="axes-table" class="table-wrapper">
                                                             <table>
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>CPTY</th>
-                                                                        <th>DESK</th>
-                                                                        <th>ISIN</th>
-                                                                        <th>AMT</th>
-																		<th>CUR</th>
-																		<th>B/S</th>
-																		<th>PRC</th>
-																		<th>YLD</th>
+                                                                        <th>Sector</th>
+                                                                        <th>DEMAND</th>
+                                                                        <th>SUPPLY</th>
+																		<th>NET</th>
+																		<th>Trend</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                     <!-- ko foreach: { data : select_aggreg_axes, as : 'axe'} -->
                                                                     <tr>
-                                                                        <td data-bind="text : axe.CounterParty"></td>
-                                                                        <td data-bind="text : axe.Desk"></td>
-                                                                        <td data-bind="text : axe.ISIN"></td>
-																		<td data-bind="text : axe.Amount"></td>
-																		<td data-bind="text : 'EUR'"></td>
-																		<td data-bind="text : axe.BuyOrSell"></td>
-																		<td data-bind="text : axe.CashPrice"></td>
-																		<td data-bind="text : axe.YieldPrice"></td>
+                                                                        <td data-bind="text : current_sector().name"></td>
+                                                                        <td data-bind="text : current_sector().demand"></td>
+																		<td data-bind="text :current_sector().supply"></td>
+																		<td data-bind="text :current_sector().net"></td>
+																		<td data-bind="text : current_trend"></td>
                                                                     </tr>
-                                                                    <!--/ko -->
                                                                 </tbody>
                                                             </table>
                                                         </div>

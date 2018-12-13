@@ -58,6 +58,7 @@ namespace AMIntermediaWeb
             aggregationService.Start();
             ordersPullingService.Start();
             aggregationService.OrdersUpdateHandler = dashboardHandler.SendOrderUpdate;
+            aggregationService.OrdersAdditionHandler = dashboardHandler.OrdersAdditionHandler;
             aggregationService.AxesUpdateHandler = dashboardHandler.SendAxeUpdate;
             
             app.MapWebSocketManager("/ws", dashboardHandler);

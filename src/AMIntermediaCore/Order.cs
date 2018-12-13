@@ -11,6 +11,13 @@ namespace AMIntermediaCore
         public string ISIN {get; set;}
         public string TradeId {get; set; }
          public string TraderId {get; set; }
+
+         public string SecName {get; set; }
+         public string BuyOrSell {get; set;}
+
+         public string Currency {get; set;}
+
+         public string Amount {get; set;}
         public string Portfolio {get; set;}
         public string GoP {get; set;}
 

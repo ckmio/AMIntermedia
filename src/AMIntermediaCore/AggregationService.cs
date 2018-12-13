@@ -19,6 +19,8 @@ namespace AMIntermediaCore
 
         public Action<Axe> AxesUpdateHandler {get; set;}
 
+        public Action<Order> OrdersAdditionHandler {get; set;}
+
         public Action<Order> OrdersUpdateHandler {get; set;}
 
         public AggregationService()
@@ -51,8 +53,9 @@ namespace AMIntermediaCore
             {
                 var axeDict =(JObject)((JObject)axeUpdate.Content)["content"];
                 var axe = Axe.FromJObject(axeDict);
-                SaveAxe(axe);
+                var affectedOrders = SaveAxeAndReturnUpdatedOrders(axe);
                 if(AxesUpdateHandler!=null) AxesUpdateHandler(axe);
+                if(OrdersUpdateHandler!=null) affectedOrders.ForEach(o => OrdersUpdateHandler(o));
                 return;
             }
 
@@ -62,14 +65,16 @@ namespace AMIntermediaCore
                 var order = Order.FromJObject(orderDict);
                 order.Axes = FindLatestAxes(order.ISIN);
                 Orders.Add(order);
-                if(OrdersUpdateHandler!=null) OrdersUpdateHandler(order);
+                if(OrdersAdditionHandler!=null) OrdersAdditionHandler(order);
             }
         }
 
-        public void SaveAxe(Axe axe)
+        public List<Order> SaveAxeAndReturnUpdatedOrders(Axe axe)
         {
             Axes.Add(axe);
-            Console.WriteLine(axe.ISIN);
+            var affectedOrders =  Orders.Where(o => o.ISIN == axe.ISIN).ToList(); 
+            affectedOrders.ForEach((o) => o.Axes.Add(axe));
+            return affectedOrders;
         }
 
         public List<Axe> FindLatestAxes(string ISIN)

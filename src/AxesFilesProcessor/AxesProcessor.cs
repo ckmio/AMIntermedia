@@ -84,10 +84,7 @@ namespace AMIntermedia.AxesFilesProcessor
             FileSystemWatcher watcher = new FileSystemWatcher();
             watcher.Path = IncomingFilesDirectoryPath;
             watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.LastAccess;
-            /*
-            watcher.Filter = "*.*";
-            */
-            watcher.Filter = "NAT_FI.*";
+            watcher.Filter = this.AxesFilesFilter;
             watcher.Changed += new FileSystemEventHandler(CsvFileEventHandler);
             watcher.Renamed += new RenamedEventHandler(RenamedCsvFileEventHandler);
             watcher.EnableRaisingEvents = true;

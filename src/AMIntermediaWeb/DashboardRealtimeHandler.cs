@@ -10,7 +10,17 @@ namespace AMIntermediaWeb
 {
     public class DashboardRealtimeHandler : WebSocketHandler 
     {
-        public DashboardRealtimeHandler(WebSocketManager manager):base(manager){    } 
+        AggregationService AggregService {get; set;}
+        public DashboardRealtimeHandler(WebSocketManager manager, AggregationService aggregrationService):base(manager){   
+            this.AggregService = aggregrationService;
+         }
+
+        
+        public override async Task OnConnected(WebSocket socket)
+        {
+            base.OnConnected(socket);
+            SendMessageAsync(socket, String.Format("init:{0}",JsonConvert.SerializeObject(AggregService.Orders)));
+        }
 
         public override Task ReceiveAsync(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
         {
@@ -31,7 +41,13 @@ namespace AMIntermediaWeb
 
         public void SendOrderUpdate(Order order)
         {
-            SendMessageToAllAsync("order-update:" + JsonConvert.SerializeObject(order));
+             Console.WriteLine($"order update for isin: {order.ISIN}\n");
+             SendMessageToAllAsync("order-update:" + JsonConvert.SerializeObject(order));
+        }
+
+         public void OrdersAdditionHandler(Order order)
+        {
+            SendMessageToAllAsync("order-add:" + JsonConvert.SerializeObject(order));
         }
     }
 }
