@@ -1,6 +1,23 @@
 (function (){
 
 
+    var global_dpr_and_insights = {
+        'GOVIES':[
+            {"CounterParty" : "SG", "Rank":"1st", "Score": "-", rankingFirst : true,  Mode : "LT", Method : "Auto", Venue : "TW" ,vol : '2.8 Bn', mks : '23%'},
+            {"CounterParty" : "BNP", "Rank":"2nd","Score": "-", rankingSecond : true, Mode : "LT", Method : "Auto", Venue : "TW" ,vol : '2.0 Bn', mks : '12.3%'} ,
+            {"CounterParty" : "MLYNCH", "Score": "-","Rank":"3rd", rankingThird : true, Mode : "LT", Method : "Auto", Venue : "TW" ,vol : '1.5 Bn', mks : '8.8%'}
+        ],
+        'CORP':[
+            {"CounterParty" : "MLYNCH","Rank":"1st", "Score": "-", rankingFirst : true,  Mode : "LT", Method : "RFQ", Venue : "TW" ,vol : '1.10 Bn', mks : '7.9%'},
+            {"CounterParty" : "BNP", "Score": "-","Rank":"2nd", rankingSecond : true, Mode : "LT", Method : "RFQ", Venue : "TW" ,vol : '1.06 Bn', mks : '7.4%'} ,
+            {"CounterParty" : "MS", "Score": "-","Rank":"3rd", rankingThird : true, Mode : "LT", Method : "RFQ", Venue : "TW" ,vol : '0.93 Bn', mks : '6.9%'}
+        ],
+        'EMERGING':[
+            {"CounterParty" : "JPM","Rank":"1st", "Score": "-", rankingFirst : true,  Mode : "HT", Method : "Voice", Venue : "Voice" ,vol : '0.92 Bn', mks : '15.7%'},
+            {"CounterParty" : "HSBC", "Score": "-","Rank":"2nd", rankingSecond : true, Mode : "HT", Method : "Voice", Venue : "Voice" ,vol : '0.80 Bn', mks : '13.6%'} ,
+            {"CounterParty" : "BNP", "Score": "-", "Rank":"3rd",rankingThird : true, Mode : "HT", Method : "Voice", Venue : "Voice" ,vol : '0.76 Bn', mks : '12.9%'}
+        ]
+    };
     function findOrder(Id)
     {
         for(var i=0, n=viewModel.aggregations().length; i<n; i++)

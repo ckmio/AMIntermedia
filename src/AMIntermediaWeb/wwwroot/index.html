@@ -32,7 +32,7 @@
 
 									
 										<div class="row gtr-200">
-											<div class="col-6 box blotter-wrapper">
+											<div class="col-7 box blotter-wrapper">
 
 												<!-- Table -->
 													<h2>Blotter</h2>
@@ -45,6 +45,7 @@
 																			<th>Desk</th>
 																			<th>ISIN</th>
 																			<th>SECNAME</th>
+																			<th></th>
 																			<th>BUY/SELL</th>
 																			<th>AMT</th>
 																			<th>CUR</th>
@@ -59,7 +60,7 @@
 																<tr data-bind="click : $root.select_aggreg, clickBubble : false, css: {selected : aggr.selected }">
 																	<td data-bind="text : aggr.Desk"></td>
 																	<td data-bind="text : aggr.ISIN"></td>
-																	<td data-bind="text : aggr.SecName"></td>
+																	<td colspan="2" data-bind="text : aggr.SecName"></td>
 																	<td data-bind="text : aggr.BuyOrSell"></td>
                                                                     <td data-bind="text : aggr.Amount"></td>
                                                                     <td data-bind="text : 'EUR'"></td>
@@ -72,7 +73,7 @@
 
                                                 <!-- Put axes details here...-->
 											</div>
-											<div class="col-6 box">
+											<div class="col-5 box">
 													<h2>Pre-Trade Analysis <span data-bind="text :selected_aggreg()!=null? selected_aggreg().Desk : ''"></span></h2>
 													<!-- Table -->
 														<div class="row" data-bind="visible: has_selected_aggreg">
@@ -134,7 +135,7 @@
 	
 													<!-- Put axes details here...-->
 											</div>
-											<div class="col-6" data-bind="visible : has_selected_aggreg">
+											<div class="col-7" data-bind="visible : has_selected_aggreg">
                                                     <!-- Table -->
                                                         <h3>Axes <span data-bind="text :selected_aggreg()!=null? ' on ' + selected_aggreg().ISIN : ''"></span></h3>
     
@@ -178,7 +179,7 @@
     
                                                     <!-- Put axes details here...-->
 											</div>
-											<div class="col-6" data-bind="visible : has_selected_aggreg">
+											<div class="col-5" data-bind="visible : has_selected_aggreg">
                                                     <!-- Table -->
                                                         <h3>Aggregations</h3>
     
